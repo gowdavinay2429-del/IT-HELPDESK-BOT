@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SISA IT Helpdesk</title>
+    <style>
+        /* Basic styles for the page */
+        body { 
+            font-family: Arial, sans-serif; 
+            display: grid; 
+            place-items: center; 
+            min-height: 90vh; 
+            background-color: #f4f4f4; 
+            overflow: hidden; /* Prevents scrollbars during animation */
+        }
+
+        /* --- Animation for the H1 Title --- */
+        h1 {
+            animation: fadeInDown 1s ease-out both;
+        }
+
+        /* --- Animation for the Chat Container --- */
+        #chat-container {
+            width: 370px;
+            height: 500px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            
+            /* Apply the animation here */
+            animation: fadeInUp 1s ease-out 0.5s both; /* 0.5s delay */
+        }
+
+        /* --- Keyframe Definitions --- */
+        @keyframes fadeInDown {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- NEW CSS FOR CHAT BUBBLES ---
+         This makes the messages themselves animate in.
+        */
+        #chat-container .rasa-msg {
+            animation: fadeInUp 0.5s ease-out both;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>IT Helpdesk Chat</h1>
+
+    <div id="chat-container"></div>
+
+    <script type="module">
+        // 1. Import the class from your file
+        import WebChat from './webchat.js';
+
+        // 2. Initialize the WebChat class
+        const chat = new WebChat({
+            transport: 'rest', 
+            rasaEndpoint: 'http://localhost:5005/webhooks/rest/webhook', 
+            container: document.getElementById('chat-container'), 
+            
+            // --- YOUR UPDATED SETTINGS ---
+            title: 'SISA IT helpdesk',
+            subtitle: 'How can I help you today?',
+            placeholder: 'Type your message...',
+
+            // --- THIS IS THE NEW LINE THAT TRIGGERS THE GREETING ---
+            initPayload: '/greet' 
+        });
+
+        // 3. Open the chat
+        chat.open();
+    </script>
+
+</body>
+</html>
